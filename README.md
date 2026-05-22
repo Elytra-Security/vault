@@ -104,4 +104,4 @@ license immediately.
 
 | Version | Date       | Notes              |
 |---------|------------|--------------------|
-| 2026.01 | 2026-05-22 | Initial GA release |
+| 2026.01 | 2022-04-01 | Initial GA release |
