@@ -1,102 +1,86 @@
 # Vault On Prem
 
-**Vault On Prem** is the on-premises secure evidence vault by Elytra Security.
+**Vault On Prem** is the on-premises secure evidence vault by Elytra Security Private Limited.
 
-It collects logs from Wazuh agents, packages them into cryptographically
-signed and encrypted archives, and uploads them to S3-compatible WORM object
-storage. Every archive batch carries a deterministic manifest, checksum, and
-audit-grade control-plane record.
+It collects raw logs from Wazuh agents, packages them into cryptographically signed and
+encrypted archives, and uploads them to S3-compatible WORM object storage. Every archive
+batch carries a deterministic manifest, checksum, and audit-grade control-plane record.
 
 Vault runs entirely on-premises. No data leaves the network during operation.
-No cloud dependency. No analysis or detection at runtime — custody and
-traceability only.
+No cloud dependency. No analysis or detection at runtime — custody and traceability only.
+
+---
+
+## What Vault On Prem Does
+
+Vault On Prem answers the questions that matter to compliance and security operations teams:
+
+- Which log sources are expected to report, and which went silent last night?
+- Is every archive cryptographically intact and traceable to its source?
+- Where exactly did each archive land in WORM storage, and when?
+- Who performed administrative actions, and what changed?
+- Are all expected sources covered, or are there gaps in the archive record?
+
+---
+
+## Key Capabilities
+
+**Secure Log Collection** — SSH pull from Wazuh Manager; no agent installation required on the Vault host
+
+**Cryptographic Archival** — Ed25519 signing and X25519+AES-256-GCM encryption on every archive batch
+
+**WORM Upload** — uploads to any S3-compatible immutable object storage endpoint
+
+**Coverage Tracking** — identifies expected sources that did not report within a defined window
+
+**Audit-Grade Control Plane** — tamper-evident record of every archival operation, upload outcome, and key lifecycle event
+
+**Operator Dashboard** — source catalog, coverage history, archive browser, job run history, and audit log
+
+All classification and record-keeping is deterministic. No LLM at runtime.
 
 ---
 
 ## System Requirements
 
-- Ubuntu 22.04+ or Debian 12+
+- Ubuntu 22.04 LTS or 24.04 LTS (x86-64)
 - 4 GB RAM minimum (8 GB recommended)
 - 20 GB free disk on /var
-- x86-64 architecture
 - systemd
-- Internet access to ela.elytrasecurity.com on port 443 for license activation
+- Network access to your Wazuh Manager and S3-compatible WORM storage endpoint
 
 ---
 
-## Download
+## Getting Vault On Prem
 
-Download the latest release from the
-[Releases](https://github.com/Elytra-Security/vault/releases) page.
+Vault On Prem is distributed exclusively through the Elytra Customer Portal.
+Licensed customers can download the latest release and installation documentation at:
 
-Current release: **2026.01**
+**[https://portal.elytrasecurity.com](https://portal.elytrasecurity.com)**
 
-    curl -LO https://github.com/Elytra-Security/vault/releases/download/2026.01/vault-2026.01.tar.gz
-    curl -LO https://github.com/Elytra-Security/vault/releases/download/2026.01/vault-2026.01.tar.gz.sha256
-
----
-
-## Verify
-
-Always verify the checksum before installing:
-
-    sha256sum --check vault-2026.01.tar.gz.sha256
-
-Expected output: `vault-2026.01.tar.gz: OK`
-
-Do not proceed if the checksum fails.
-
----
-
-## Install
-
-    tar xzf vault-2026.01.tar.gz
-    cd vault-2026.01
-    sudo ./scripts/install.sh
-
-The install script:
-
-- Requires sudo access
-- Installs all system dependencies automatically
-- Creates the vault-op system user and directory structure
-- Sets up PostgreSQL and applies the database schema
-- Configures and starts the vault-on-prem service via systemd
-- Sets up nginx as a TLS reverse proxy on port 443
-- Generates Ed25519 signing and X25519 encryption keypairs
-- Writes operator credentials to ~/vault_credentials.txt
-
-Installation takes approximately 2-5 minutes on a fresh system.
-
----
-
-## First Login
-
-After installation, open a browser and navigate to:
-
-    https://APPLIANCE_IP
-
-Accept the self-signed certificate warning. Log in with the credentials
-written to ~/vault_credentials.txt during install.
+To request access or a trial license, contact:
+[info@elytrasecurity.com](mailto:info@elytrasecurity.com)
 
 ---
 
 ## License
 
-Vault On Prem requires a license to run archival jobs. Without a license
+Vault On Prem requires a valid Elytra license to run archival jobs. Without a license
 the dashboard is accessible but the pipeline is disabled.
 
-To obtain a license contact: info@elytrasecurity.com
-
-Once you have a license file (.ela), install it via Settings → License →
-Install License File. No restart is required. The daemon reloads the
-license immediately.
+Licenses are provisioned through the Elytra Customer Portal after entitlements are
+confirmed. Once you have a license file, install it via **Settings → License** in the
+Vault operator console. No service restart is required.
 
 ---
 
 ## Support
 
-- General: support@elytrasecurity.com
-- Security issues: see SECURITY.md
+| Channel          | Contact                                                                 |
+|------------------|-------------------------------------------------------------------------|
+| General          | [support@elytrasecurity.com](mailto:support@elytrasecurity.com)        |
+| Sales/licensing  | [info@elytrasecurity.com](mailto:info@elytrasecurity.com)              |
+| Security issues  | See SECURITY.md                                                         |
 
 ---
 
@@ -104,4 +88,10 @@ license immediately.
 
 | Version | Date       | Notes              |
 |---------|------------|--------------------|
-| 2026.01 | 2022-04-01 | Initial GA release |
+| 2026.01 | 2026-05-31 | Initial GA release |
+
+---
+
+## Security
+
+For responsible disclosure and security vulnerability reporting, see SECURITY.md.
